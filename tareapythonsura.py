@@ -239,7 +239,37 @@ def borrar_usuario(self, id_usuario):
         libro = db.cursor.fetchone()
         db.cerrar()
         return libro
+ def actualizar_libro(self, id_libro, titulo=None, autor=None, genero=None):
+        libro = self.consultar_libro(id_libro)
+        if libro:
+            if titulo:
+                libro.titulo = titulo
+            if autor:
+                libro.autor = autor
+            if genero:
+                libro.genero = genero
+            return libro
+        return None
  
+    def borrar_libro(self, id_libro):
+        self.libros = [l for l in self.libros if l.id != id_libro]
+ 
+    # Métodos CRUD para Revista
+    def crear_revista(self, titulo, editorial, categoria):
+        if not titulo or len(titulo) < 2:
+            print("Título inválido. Debe tener al menos 2 caracteres.")
+            return None
+        if not editorial or not Usuario.validar_nombre(editorial):
+            print("Editorial inválida. Solo letras y espacios.")
+            return None
+        if not categoria or len(categoria) < 2:
+            print("Categoría inválida. Debe tener al menos 2 caracteres.")
+            return None
+        db = DBManager()
+        db.conectar()
+        db.cursor.execute("INSERT INTO revista (titulo, editorial, categoria, disponible) VALUES (%s, %s, %s, %s)", (titulo, editorial, categoria, True))
+        db.conn.commit()
+        db.cerrar()
 
 
 
