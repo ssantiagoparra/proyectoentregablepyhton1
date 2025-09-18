@@ -172,6 +172,44 @@ class Biblioteca:
         self.id_revista = 1
         self.id_disp = 1
         self.id_prestamo = 1
+          # Métodos CRUD para Usuario
+    def crear_usuario(self, nombre, telefono, email):
+        if not Usuario.validar_nombre(nombre):
+            print("Nombre inválido. Solo letras y espacios, mínimo 2 caracteres.")
+            return None
+        if not Usuario.validar_telefono(telefono):
+            print("Teléfono inválido. Debe ser numérico, entre 7 y 15 dígitos.")
+            return None
+        if not Usuario.validar_email(email):
+            print("Email inválido.")
+            return None
+        db = DBManager()
+        db.conectar()
+        db.cursor.execute("INSERT INTO usuario (nombre, telefono, email) VALUES (%s, %s, %s)", (nombre, telefono, email))
+        db.conn.commit()
+        db.cerrar()
+        print("Usuario registrado correctamente en la base de datos.")
+        return True
+ 
+    def consultar_usuario(self, id_usuario):
+        db = DBManager()
+        db.conectar()
+        db.cursor.execute("SELECT * FROM usuario WHERE id=%s", (id_usuario,))
+        usuario = db.cursor.fetchone()
+        db.cerrar()
+        return usuario
+ 
+    def actualizar_usuario(self, id_usuario, nombre=None, telefono=None, email=None):
+        usuario = self.consultar_usuario(id_usuario)
+        if usuario:
+            if nombre:
+                usuario.nombre = nombre
+            if telefono:
+                usuario.telefono = telefono
+            if email and Usuario.validar_email(email):
+                usuario.email = email
+            return usuario
+        return None
 
 
 
