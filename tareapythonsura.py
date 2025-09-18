@@ -337,6 +337,43 @@ def borrar_usuario(self, id_usuario):
                 disp.modelo = modelo
             return disp
         return None
+        def borrar_dispositivo(self, id_disp):
+        self.dispositivos = [d for d in self.dispositivos if d.id != id_disp]
+ 
+    # Métodos CRUD para Prestamo
+    def crear_prestamo(self, id_usuario, tipo_objeto, id_objeto, tipo_prestamo):
+        db = DBManager()
+        db.conectar()
+        db.cursor.execute("INSERT INTO prestamo (id_usuario, tipo_objeto, id_objeto, tipo_prestamo, fecha_prestamo, activo) VALUES (%s, %s, %s, %s, %s, %s)", (id_usuario, tipo_objeto, id_objeto, tipo_prestamo, datetime.now().strftime("%d/%m/%Y"), True))
+        # Marcar objeto como no disponible si es libro, revista o dispositivo
+        if tipo_objeto == 'libro':
+            db.cursor.execute("UPDATE libro SET disponible=0 WHERE id=%s", (id_objeto,))
+        elif tipo_objeto == 'revista':
+            db.cursor.execute("UPDATE revista SET disponible=0 WHERE id=%s", (id_objeto,))
+        elif tipo_objeto == 'dispositivo':
+            db.cursor.execute("UPDATE dispositivo SET disponible=0 WHERE id=%s", (id_objeto,))
+        db.conn.commit()
+        db.cerrar()
+        print("Préstamo registrado correctamente en la base de datos.")
+        return True
+ 
+    def consultar_prestamo(self, id_prestamo):
+        db = DBManager()
+        db.conectar()
+        db.cursor.execute("SELECT * FROM prestamo WHERE id=%s", (id_prestamo,))
+        prestamo = db.cursor.fetchone()
+        db.cerrar()
+        return prestamo
+ 
+    def actualizar_prestamo(self, id_prestamo, tipo_prestamo=None, activo=None):
+        prestamo = self.consultar_prestamo(id_prestamo)
+        if prestamo:
+            if tipo_prestamo:
+                prestamo.tipo_prestamo = tipo_prestamo
+            if activo is not None:
+                prestamo.activo = activo
+            return prestamo
+        return None
 
 
 
