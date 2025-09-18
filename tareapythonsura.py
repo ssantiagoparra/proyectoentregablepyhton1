@@ -299,6 +299,44 @@ def borrar_usuario(self, id_usuario):
  
 
  #-----------------------------------------------------------
+    # Métodos CRUD para Dispositivo
+    def crear_dispositivo(self, tipo, marca, modelo):
+        if not tipo or len(tipo) < 2:
+            print("Tipo inválido. Debe tener al menos 2 caracteres.")
+            return None
+        if not marca or not Usuario.validar_nombre(marca):
+            print("Marca inválida. Solo letras y espacios.")
+            return None
+        if not modelo or len(modelo) < 2:
+            print("Modelo inválido. Debe tener al menos 2 caracteres.")
+            return None
+        db = DBManager()
+        db.conectar()
+        db.cursor.execute("INSERT INTO dispositivo (tipo, marca, modelo, disponible) VALUES (%s, %s, %s, %s)", (tipo, marca, modelo, True))
+        db.conn.commit()
+        db.cerrar()
+        print("Dispositivo registrado correctamente en la base de datos.")
+        return True
+ 
+    def consultar_dispositivo(self, id_disp):
+        db = DBManager()
+        db.conectar()
+        db.cursor.execute("SELECT * FROM dispositivo WHERE id=%s", (id_disp,))
+        disp = db.cursor.fetchone()
+        db.cerrar()
+        return disp
+ 
+    def actualizar_dispositivo(self, id_disp, tipo=None, marca=None, modelo=None):
+        disp = self.consultar_dispositivo(id_disp)
+        if disp:
+            if tipo:
+                disp.tipo = tipo
+            if marca:
+                disp.marca = marca
+            if modelo:
+                disp.modelo = modelo
+            return disp
+        return None
 
 
 
