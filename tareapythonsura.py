@@ -270,7 +270,35 @@ def borrar_usuario(self, id_usuario):
         db.cursor.execute("INSERT INTO revista (titulo, editorial, categoria, disponible) VALUES (%s, %s, %s, %s)", (titulo, editorial, categoria, True))
         db.conn.commit()
         db.cerrar()
+#PARTE MATIAS
+        print("Revista registrada correctamente en la base de datos.")
+        return True
+ 
+    def consultar_revista(self, id_revista):
+        db = DBManager()
+        db.conectar()
+        db.cursor.execute("SELECT * FROM revista WHERE id=%s", (id_revista,))
+        revista = db.cursor.fetchone()
+        db.cerrar()
+        return revista
+ 
+    def actualizar_revista(self, id_revista, titulo=None, editorial=None, categoria=None):
+        revista = self.consultar_revista(id_revista)
+        if revista:
+            if titulo:
+                revista.titulo = titulo
+            if editorial:
+                revista.editorial = editorial
+            if categoria:
+                revista.categoria = categoria
+            return revista
+        return None
+ 
+    def borrar_revista(self, id_revista):
+        self.revistas = [r for r in self.revistas if r.id != id_revista]
+ 
 
+ #-----------------------------------------------------------
 
 
 
