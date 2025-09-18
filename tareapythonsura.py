@@ -532,6 +532,21 @@ def devolver_objeto(self, tipo_objeto):
         print(f"{tipo_objeto.capitalize()} devuelto exitosamente")
         db.cerrar()
 
+def crear_prestamo_libro(self):
+        db = DBManager()
+        db.conectar()
+        db.cursor.execute("SELECT * FROM usuario")
+        usuarios = db.cursor.fetchall()
+        if not usuarios:
+            print("No hay usuarios registrados")
+            db.cerrar()
+            return
+        db.cursor.execute("SELECT * FROM libro WHERE disponible=1")
+        libros_disponibles = db.cursor.fetchall()
+        if not libros_disponibles:
+            print("No hay libros disponibles")
+            db.cerrar()
+
 
 
 
