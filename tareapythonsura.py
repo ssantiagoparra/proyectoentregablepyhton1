@@ -70,3 +70,37 @@ class DBManager:
             activo BOOLEAN
         )''')
         self.conn.commit()
+        #-----------------------------------------------------------
+    def cerrar(self):
+        if self.cursor:
+            self.cursor.close()
+        if self.conn:
+            self.conn.close()
+from datetime import datetime
+import re
+import csv
+
+# Clase Usuario
+class Usuario:
+    def __init__(self, id_usuario, nombre, telefono, email):
+        self.id = id_usuario
+        self.nombre = nombre
+        self.telefono = telefono
+        self.email = email
+
+    def __str__(self):
+        return f"ID: {self.id} | Nombre: {self.nombre} | Tel: {self.telefono} | Email: {self.email}"
+
+    @staticmethod
+    def validar_email(email):
+        return re.match(r"^[\w\.-]+@[\w\.-]+\.\w+$", email)
+
+    @staticmethod
+    def validar_telefono(telefono):
+        # Permite números de 7 a 15 dígitos, opcionalmente con +
+        return re.match(r"^\+?\d{7,15}$", telefono)
+
+    @staticmethod
+    def validar_nombre(nombre):
+        # Permite letras, espacios y tildes, mínimo 2 caracteres
+        return re.match(r"^[A-Za-zÁÉÍÓÚáéíóúÑñ ]{2,}$", nombre)
