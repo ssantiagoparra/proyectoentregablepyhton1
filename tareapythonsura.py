@@ -495,6 +495,43 @@ def crear_prestamo_objeto(self, tipo_objeto):
         print(f"Préstamo de {tipo_objeto} creado correctamente en la base de datos.")
         db.cerrar()
 
+def devolver_objeto(self, tipo_objeto):
+        db = DBManager()
+        db.conectar()
+        db.cursor.execute(f"SELECT * FROM prestamo WHERE activo=1 AND tipo_objeto=%s", (tipo_objeto,))
+        prestamos_activos = db.cursor.fetchall()
+        if not prestamos_activos:
+            print(f"No hay préstamos activos de {tipo_objeto}")
+            db.cerrar()
+            return
+        print(f"Préstamos activos de {tipo_objeto}:")
+        for p in prestamos_activos:
+            db.cursor.execute("SELECT nombre FROM usuario WHERE id=%s", (p[1],))
+            usuario = db.cursor.fetchone()
+            nombre_objeto = None
+            if tipo_objeto == 'libro':
+                db.cursor.execute("SELECT titulo FROM libro WHERE id=%s", (p[3],))
+                nombre_objeto = db.cursor.fetchone()
+            elif tipo_objeto == 'revista':
+                db.cursor.execute("SELECT titulo FROM revista WHERE id=%s", (p[3],))
+                nombre_objeto = db.cursor.fetchone()
+            elif tipo_objeto == 'dispositivo':
+                db.cursor.execute("SELECT modelo FROM dispositivo WHERE id=%s", (p[3],))
+                nombre_objeto = db.cursor.fetchone()
+            if nombre_objeto and usuario:
+                print(f"{p[0]}. {nombre_objeto[0]} - {usuario[0]}")
+        id_prestamo = int(input("ID del préstamo: "))
+        prestamo = next((p for p in prestamos_activos if p[0] == id_prestamo), None)
+        if not prestamo:
+            print("Préstamo no encontrado")
+            db.cerrar()
+            return
+        db.cursor.execute("UPDATE prestamo SET activo=0 WHERE id=%s", (id_prestamo,))
+        db.cursor.execute(f"UPDATE {tipo_objeto} SET disponible=1 WHERE id=%s", (prestamo[3],))
+        db.conn.commit()
+        print(f"{tipo_objeto.capitalize()} devuelto exitosamente")
+        db.cerrar()
+
 
 
 
