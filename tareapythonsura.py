@@ -374,6 +374,39 @@ def borrar_usuario(self, id_usuario):
                 prestamo.activo = activo
             return prestamo
         return None
+         def borrar_prestamo(self, id_prestamo):
+        self.prestamos = [p for p in self.prestamos if p.id != id_prestamo]
+ 
+    def mostrar_menu(self):
+        print("\n=== BIBLIOTECA ===")
+        print("1. Registrar usuario")
+        print("2. Registrar libro")
+        print("3. Registrar revista")
+        print("4. Registrar dispositivo")
+        print("5. Ver usuarios")
+        print("6. Ver libros")
+        print("7. Ver revistas")
+        print("8. Ver dispositivos")
+        print("9. Crear préstamo de libro")
+        print("10. Crear préstamo de revista")
+        print("11. Crear préstamo de dispositivo")
+        print("12. Devolver libro")
+        print("13. Devolver revista")
+        print("14. Devolver dispositivo")
+        print("15. Ver préstamos")
+        print("16. Exportar préstamos a CSV")
+        print("17. Salir")
+        opcion = input("Opción: ")
+        return opcion
+ 
+    def ejecutar(self):
+        while True:
+            opcion = self.mostrar_menu()
+            if opcion == '1':
+                nombre = input("Nombre: ")
+                telefono = input("Teléfono: ")
+                email = input("Email: ")
+                self.crear_usuario(nombre, telefono, email)
 
 
 
