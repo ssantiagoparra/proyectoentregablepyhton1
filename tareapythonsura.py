@@ -408,6 +408,53 @@ def borrar_usuario(self, id_usuario):
                 email = input("Email: ")
                 self.crear_usuario(nombre, telefono, email)
 
+           #PARTE JOANOTTI
+            elif opcion == '2':
+                titulo = input("Título: ")
+                autor = input("Autor: ")
+                genero = input("Género: ")
+                self.crear_libro(titulo, autor, genero)
+            elif opcion == '3':
+                titulo = input("Título: ")
+                editorial = input("Editorial: ")
+                categoria = input("Categoría: ")
+                self.crear_revista(titulo, editorial, categoria)
+            elif opcion == '4':
+                tipo = input("Tipo: ")
+                marca = input("Marca: ")
+                modelo = input("Modelo: ")
+                self.crear_dispositivo(tipo, marca, modelo)
+            elif opcion == '5':
+                self.ver_usuarios()
+            elif opcion == '6':
+                self.ver_libros()
+            elif opcion == '7':
+                self.ver_revistas()
+            elif opcion == '8':
+                self.ver_dispositivos()
+            elif opcion == '9':
+                self.crear_prestamo_objeto('libro')
+            elif opcion == '10':
+                self.crear_prestamo_objeto('revista')
+            elif opcion == '11':
+                self.crear_prestamo_objeto('dispositivo')
+            elif opcion == '12':
+                self.devolver_objeto('libro')
+            elif opcion == '13':
+                self.devolver_objeto('revista')
+            elif opcion == '14':
+                self.devolver_objeto('dispositivo')
+            elif opcion == '15':
+                self.ver_prestamos()
+            elif opcion == '16':
+                self.exportar_prestamos_csv()
+            elif opcion == '17':
+                print("¡Adiós!")
+                break
+            else:
+                print("Opción inválida")
+            input("\nPresiona Enter para continuar...")
+
 
 
 
