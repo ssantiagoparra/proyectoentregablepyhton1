@@ -455,6 +455,46 @@ def borrar_usuario(self, id_usuario):
                 print("Opción inválida")
             input("\nPresiona Enter para continuar...")
 
+def crear_prestamo_objeto(self, tipo_objeto):
+        db = DBManager()
+        db.conectar()
+        db.cursor.execute("SELECT * FROM usuario")
+        usuarios = db.cursor.fetchall()
+        if not usuarios:
+            print("No hay usuarios registrados")
+            db.cerrar()
+            return
+        db.cursor.execute(f"SELECT * FROM {tipo_objeto} WHERE disponible=1")
+        objetos_disponibles = db.cursor.fetchall()
+        if not objetos_disponibles:
+            print(f"No hay {tipo_objeto}s disponibles")
+            db.cerrar()
+            return
+        print("Usuarios:")
+        for u in usuarios:
+            print(f"{u[0]}. {u[1]}")
+        id_usuario = int(input("ID del usuario: "))
+        usuario = next((u for u in usuarios if u[0] == id_usuario), None)
+        if not usuario:
+            print("Usuario no encontrado")
+            db.cerrar()
+            return
+        print(f"{tipo_objeto.capitalize()}s disponibles:")
+        for o in objetos_disponibles:
+            nombre = o[1] if tipo_objeto != 'dispositivo' else o[3]
+            print(f"{o[0]}. {nombre}")
+        id_objeto = int(input(f"ID del {tipo_objeto}: "))
+        objeto = next((o for o in objetos_disponibles if o[0] == id_objeto), None)
+        if not objeto:
+            print(f"{tipo_objeto.capitalize()} no encontrado")
+            db.cerrar()
+            return
+        db.cursor.execute("INSERT INTO prestamo (id_usuario, tipo_objeto, id_objeto, tipo_prestamo, fecha_prestamo, activo) VALUES (%s, %s, %s, %s, %s, %s)", (id_usuario, tipo_objeto, id_objeto, 'corto', datetime.now().strftime("%d/%m/%Y"), True))
+        db.cursor.execute(f"UPDATE {tipo_objeto} SET disponible=0 WHERE id=%s", (id_objeto,))
+        db.conn.commit()
+        print(f"Préstamo de {tipo_objeto} creado correctamente en la base de datos.")
+        db.cerrar()
+
 
 
 
