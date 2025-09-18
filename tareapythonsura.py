@@ -210,7 +210,36 @@ class Biblioteca:
                 usuario.email = email
             return usuario
         return None
-
+def borrar_usuario(self, id_usuario):
+        self.usuarios = [u for u in self.usuarios if u.id != id_usuario]
+ 
+    # Métodos CRUD para Libro
+    def crear_libro(self, titulo, autor, genero):
+        if not titulo or len(titulo) < 2:
+            print("Título inválido. Debe tener al menos 2 caracteres.")
+            return None
+        if not autor or not Usuario.validar_nombre(autor):
+            print("Autor inválido. Solo letras y espacios.")
+            return None
+        if not genero or len(genero) < 2:
+            print("Género inválido. Debe tener al menos 2 caracteres.")
+            return None
+        db = DBManager()
+        db.conectar()
+        db.cursor.execute("INSERT INTO libro (titulo, autor, genero, disponible) VALUES (%s, %s, %s, %s)", (titulo, autor, genero, True))
+        db.conn.commit()
+        db.cerrar()
+        print("Libro registrado correctamente en la base de datos.")
+        return True
+ 
+    def consultar_libro(self, id_libro):
+        db = DBManager()
+        db.conectar()
+        db.cursor.execute("SELECT * FROM libro WHERE id=%s", (id_libro,))
+        libro = db.cursor.fetchone()
+        db.cerrar()
+        return libro
+ 
 
 
 
