@@ -140,3 +140,43 @@ class Dispositivo:
         self.modelo = modelo
         self.disponible = True
 #----------------------------------------------------------------------------
+def __str__(self):
+        estado = "Disponible" if self.disponible else "Prestado"
+        return f"ID: {self.id} | Tipo: {self.tipo} | Marca: {self.marca} | Modelo: {self.modelo} | Estado: {estado}"
+ 
+# Clase Prestamo
+class Prestamo:
+    def __init__(self, id_prestamo, id_usuario, tipo_objeto, id_objeto, tipo_prestamo):
+        self.id = id_prestamo
+        self.id_usuario = id_usuario
+        self.tipo_objeto = tipo_objeto # libro, revista, dispositivo
+        self.id_objeto = id_objeto
+        self.tipo_prestamo = tipo_prestamo # corto, largo, institucional, etc.
+        self.fecha_prestamo = datetime.now().strftime("%d/%m/%Y")
+        self.activo = True
+ 
+    def __str__(self):
+        estado = "Activo" if self.activo else "Devuelto"
+        return f"ID: {self.id} | Usuario: {self.id_usuario} | Objeto: {self.tipo_objeto}-{self.id_objeto} | Tipo: {self.tipo_prestamo} | Fecha: {self.fecha_prestamo} | Estado: {estado}"
+ 
+# Clase Biblioteca
+class Biblioteca:
+    def __init__(self):
+        self.usuarios = []
+        self.libros = []
+        self.revistas = []
+        self.dispositivos = []
+        self.prestamos = []
+        self.id_usuario = 1
+        self.id_libro = 1
+        self.id_revista = 1
+        self.id_disp = 1
+        self.id_prestamo = 1
+
+
+
+
+
+
+
+
