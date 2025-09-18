@@ -104,3 +104,39 @@ class Usuario:
     def validar_nombre(nombre):
         # Permite letras, espacios y tildes, mínimo 2 caracteres
         return re.match(r"^[A-Za-zÁÉÍÓÚáéíóúÑñ ]{2,}$", nombre)
+    #-----------------------------------------------------------------
+# Clase Libro
+class Libro:
+    def __init__(self, id_libro, titulo, autor, genero):
+        self.id = id_libro
+        self.titulo = titulo
+        self.autor = autor
+        self.genero = genero
+        self.disponible = True
+
+    def __str__(self):
+        estado = "Disponible" if self.disponible else "Prestado"
+        return f"ID: {self.id} | Título: {self.titulo} | Autor: {self.autor} | Estado: {estado}"
+
+# Clase Revista
+class Revista:
+    def __init__(self, id_revista, titulo, editorial, categoria):
+        self.id = id_revista
+        self.titulo = titulo
+        self.editorial = editorial
+        self.categoria = categoria
+        self.disponible = True
+
+    def __str__(self):
+        estado = "Disponible" if self.disponible else "Prestado"
+        return f"ID: {self.id} | Título: {self.titulo} | Editorial: {self.editorial} | Estado: {estado}"
+
+# Clase Dispositivo
+class Dispositivo:
+    def __init__(self, id_disp, tipo, marca, modelo):
+        self.id = id_disp
+        self.tipo = tipo
+        self.marca = marca
+        self.modelo = modelo
+        self.disponible = True
+#----------------------------------------------------------------------------
